@@ -1,15 +1,30 @@
 //
 //  Station.swift
-//  DCMetro
 //
-//  Created by Christopher Rung on 6/9/16.
-//  Copyright © 2016 Christopher Rung. All rights reserved.
+//  Copyright © 2016 Christopher Rung
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import CoreLocation
 
-enum Station: String, CustomStringConvertible {
+public enum Station: String, CustomStringConvertible {
 	
 	case A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13, A14, A15,
 	B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B35,
@@ -26,7 +41,7 @@ enum Station: String, CustomStringConvertible {
 	Space
 	
 	// facilitates enumeration (Source: http://www.swift-studies.com/blog/2014/6/10/enumerating-enums-in-swift)
-	static let allValues = [A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13, A14, A15,
+	public static let allValues = [A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13, A14, A15,
 	                        B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B35,
 	                        C01, C02, C03, C04, C05, C06, C07, C08, C09, C10, C12, C13, C14, C15,
 	                        D01, D02, D03, D04, D05, D06, D07, D08, D09, D10, D11, D12, D13,
@@ -37,7 +52,7 @@ enum Station: String, CustomStringConvertible {
 	                        K01, K02, K03, K04, K05, K06, K07, K08,
 	                        N01, N02, N03, N04, N06]
 	
-	var description : String {
+	public var description : String {
 		switch self {
 		case A01: return "Metro Center"
 		case A02: return "Farragut North"
@@ -75,7 +90,7 @@ enum Station: String, CustomStringConvertible {
 		case C07: return "Pentagon"
 		case C08: return "Pentagon City"
 		case C09: return "Crystal City"
-		case C10: return "Reagan National Airport"
+		case C10: return "Reagan National Airport"	// shortened from "Ronald Reagan Washington National Airport"
 		case C12: return "Braddock Road"
 		case C13: return "King St-Old Town"
 		case C14: return "Eisenhower Avenue"
@@ -93,9 +108,9 @@ enum Station: String, CustomStringConvertible {
 		case D11: return "Cheverly"
 		case D12: return "Landover"
 		case D13: return "New Carrollton"
-		case E01: return "Mt Vernon Sq"
+		case E01: return "Mt Vernon Sq"				// shortened from "Mt Vernon Sq 7th St-Convention Center"
 		case E02: return "Shaw-Howard U"
-		case E03: return "U Street"
+		case E03: return "U Street"					// shortened from "U Street/African-Amer Civil War Memorial/Cardozo"
 		case E04: return "Columbia Heights"
 		case E05: return "Georgia Ave-Petworth"
 		case E06: return "Fort Totten"
@@ -104,7 +119,7 @@ enum Station: String, CustomStringConvertible {
 		case E09: return "College Park-U of MD"
 		case E10: return "Greenbelt"
 		case F01: return "Gallery Pl-Chinatown"
-		case F02: return "Archives"
+		case F02: return "Archives"					// shortened from "Archives-Navy Memorial-Penn Quarter"
 		case F03: return "L'Enfant Plaza"
 		case F04: return "Waterfront"
 		case F05: return "Navy Yard-Ballpark"
@@ -140,7 +155,7 @@ enum Station: String, CustomStringConvertible {
 		}
 	}
 	
-	var location: CLLocation {
+	public var location: CLLocation {
 		switch self {
 		case A01: return CLLocation(latitude: 38.898303, longitude: -77.028099)
 		case A02: return CLLocation(latitude: 38.903192, longitude: -77.039766)
