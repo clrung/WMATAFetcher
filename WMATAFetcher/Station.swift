@@ -24,21 +24,206 @@
 import Foundation
 import CoreLocation
 
+/**
+Represents each of the stations in the WMATA system
+*/
 public enum Station: String, CustomStringConvertible {
-	
-	case A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13, A14, A15,
-	B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B35,
-	C01, C02, C03, C04, C05, C06, C07, C08, C09, C10, C12, C13, C14, C15,
-	D01, D02, D03, D04, D05, D06, D07, D08, D09, D10, D11, D12, D13,
-	E01, E02, E03, E04, E05, E06, E07, E08, E09, E10,
-	F01, F02, F03, F04, F05, F06, F07, F08, F09, F10, F11,
-	G01, G02, G03, G04, G05,
-	J02, J03,
-	K01, K02, K03, K04, K05, K06, K07, K08,
-	N01, N02, N03, N04, N06,
-	Train,
-	No,
-	Space
+	/// Metro Center
+	case A01
+	/// Farragut North
+	case A02
+	/// Dupont Circle
+	case A03
+	/// Woodley Park-Zoo/Adams Morgan
+	case A04
+	/// Cleveland Park
+	case A05
+	/// Van Ness-UDC
+	case A06
+	/// Tenleytown-AU
+	case A07
+	/// Friendship Heights
+	case A08
+	/// Bethesda
+	case A09
+	/// Medical Center
+	case A10
+	/// Grosvenor-Strathmore
+	case A11
+	/// White Flint
+	case A12
+	/// Twinbrook
+	case A13
+	/// Rockville
+	case A14
+	/// Shady Grove
+	case A15
+	/// Gallery Pl-Chinatown
+	case B01
+	/// Judiciary Square
+	case B02
+	/// Union Station
+	case B03
+	/// Rhode Island Ave-Brentwood
+	case B04
+	/// Brookland-CUA
+	case B05
+	/// Fort Totten
+	case B06
+	/// Takoma
+	case B07
+	/// Silver Spring
+	case B08
+	/// Forest Glen
+	case B09
+	/// Wheaton
+	case B10
+	/// Glenmont
+	case B11
+	/// NoMA-Gallaudet U
+	case B35
+	/// Metro Center
+	case C01
+	/// McPherson Square
+	case C02
+	/// Farragut West
+	case C03
+	/// Foggy Bottom-GWU
+	case C04
+	/// Rosslyn
+	case C05
+	/// Arlington Cemetary
+	case C06
+	/// Pentagon
+	case C07
+	/// Pentagon City
+	case C08
+	/// Crystal City
+	case C09
+	/// Reagan National Airport
+	case C10
+	/// Braddock Road
+	case C12
+	/// King St-Old Town
+	case C13
+	/// Eisenhower Avenue
+	case C14
+	/// Huntington
+	case C15
+	/// Federal Triangle
+	case D01
+	/// Smithsonian
+	case D02
+	/// L'Enfant Plaza
+	case D03
+	/// Federal Center SW
+	case D04
+	/// Capitol South
+	case D05
+	/// Eastern Market
+	case D06
+	/// Potomac Ave
+	case D07
+	/// Stadium-Armory
+	case D08
+	/// Minnesota Ave
+	case D09
+	/// Deanwood
+	case D10
+	/// Cheverly
+	case D11
+	/// Landover
+	case D12
+	/// New Carrollton
+	case D13
+	/// Mt Vernon Sq
+	case E01
+	/// Shaw-Howard U
+	case E02
+	/// U Street
+	case E03
+	/// Columbia Heights
+	case E04
+	/// Georgia Ave-Petworth
+	case E05
+	/// Fort Totten
+	case E06
+	/// West Hyattsville
+	case E07
+	/// Prince George's Plaza
+	case E08
+	/// College Park-U of MD
+	case E09
+	/// Greenbelt
+	case E10
+	/// Gallery Pl-Chinatown
+	case F01
+	/// Archives
+	case F02
+	/// L'Enfant Plaza
+	case F03
+	/// Waterfront
+	case F04
+	/// Navy Yard-Ballpark
+	case F05
+	/// Anacostia
+	case F06
+	/// Congress Heights
+	case F07
+	/// Southern Avenue
+	case F08
+	/// Naylor Road
+	case F09
+	/// Suitland
+	case F10
+	/// Branch Ave
+	case F11
+	/// Benning Road
+	case G01
+	/// Capitol Heights
+	case G02
+	/// Addison Road-Seat Pleasant
+	case G03
+	/// Morgan Boulevard
+	case G04
+	/// Largo Town Center
+	case G05
+	/// Van Dorn Street
+	case J02
+	/// Franconia-Springfield
+	case J03
+	/// Court House
+	case K01
+	/// Clarendon
+	case K02
+	/// Virginia Square-GMU
+	case K03
+	/// Ballston-MU
+	case K04
+	/// East Falls Church
+	case K05
+	/// West Falls Church-UT/UVA
+	case K06
+	/// Dunn Loring-Merrifield
+	case K07
+	/// Vienna/Fairfax/GMU
+	case K08
+	/// McLean
+	case N01
+	/// Tyson's Corner
+	case N02
+	/// Greensboro
+	case N03
+	/// Spring Hill
+	case N04
+	/// Wiehle-Reston East
+	case N06
+	/// Train
+	case Train
+	/// No Passenger
+	case No
+	/// Space
+	case Space
 	
 	/**
 	Facilitates enumeration of all Metro stations (Source: http://www.swift-studies.com/blog/2014/6/10/enumerating-enums-in-swift)

@@ -30,10 +30,35 @@ import Foundation
 	public typealias Color = NSColor
 #endif
 
+/**
+Represents each of the line colors in the WMATA system.
+- Red
+- Blue
+- Yellow
+- Orange
+- Green
+- Silver
+- No passenger
+*/
 public enum Line: String {
-    
-    case RD, BL, YL, OR, GR, SV, NO
-    
+    /// Red
+    case RD
+	/// Blue
+	case BL
+	/// Yellow
+	case YL
+	/// Orange
+	case OR
+	/// Green
+	case GR
+	/// Silver
+	case SV
+	/// No passenger
+	case NO
+	
+	/**
+	The actual color of the line
+	*/
     public var color : Color {
         switch self {
         case .RD: return Color.redColor()
