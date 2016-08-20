@@ -55,6 +55,114 @@ public enum Station: String, CustomStringConvertible {
 	                        N01, N02, N03, N04, N06]
 	
 	/**
+	Returns the Station that corresponds to the given description, or nil if the description was invalid
+	
+	- parameter description: The name of the Metro station (case-insensitive)
+	*/
+	public init?(description: String) {
+		switch description.lowercaseString {
+		case "metro center":					self = .A01
+		case "farragut north":					self = .A02
+		case "dupont circle":					self = .A03
+		case "woodley park-zoo/adams morgan":	self = .A04
+		case "cleveland park":					self = .A05
+		case "van ness-udc":					self = .A06
+		case "tenleytown-au":					self = .A07
+		case "friendship heights":				self = .A08
+		case "bethesda":						self = .A09
+		case "medical center":					self = .A10
+		case "grosvenor-strathmore":			self = .A11
+		case "white flint":						self = .A12
+		case "twinbrook":						self = .A13
+		case "rockville":						self = .A14
+		case "shady grove":						self = .A15
+		case "gallery pl-chinatown":			self = .B01
+		case "judiciary square":				self = .B02
+		case "union station":					self = .B03
+		case "rhode island ave-brentwood":		self = .B04
+		case "brookland-cua":					self = .B05
+		case "fort totten":						self = .B06
+		case "takoma":							self = .B07
+		case "silver spring":					self = .B08
+		case "forest glen":						self = .B09
+		case "wheaton":							self = .B10
+		case "glenmont":						self = .B11
+		case "noma-gallaudet u":				self = .B35
+		case "mcpherson square":				self = .C02
+//		case "metro center": ignoring; set to A01 earlier
+		case "farragut west":					self = .C03
+		case "foggy bottom-gwu":				self = .C04
+		case "rosslyn":							self = .C05
+		case "arlington cemetary":				self = .C06
+		case "pentagon":						self = .C07
+		case "pentagon city":					self = .C08
+		case "crystal city":					self = .C09
+		case "reagan national airport":			self = .C10
+		case "braddock road":					self = .C12
+		case "king st-old town":				self = .C13
+		case "eisenhower avenue":				self = .C14
+		case "huntington":						self = .C15
+		case "federal triangle":				self = .D01
+		case "smithsonian":						self = .D02
+		case "l'enfant plaza":					self = .D03
+		case "federal center sw":				self = .D04
+		case "capitol south":					self = .D05
+		case "eastern market":					self = .D06
+		case "potomac ave":						self = .D07
+		case "stadium-armory":					self = .D08
+		case "minnesota ave":					self = .D09
+		case "deanwood":						self = .D10
+		case "cheverly":						self = .D11
+		case "landover":						self = .D12
+		case "new carrollton":					self = .D13
+		case "mt vernon sq":					self = .E01
+		case "shaw-howard u":					self = .E02
+		case "u street":						self = .E03
+		case "columbia heights":				self = .E04
+		case "georgia ave-petworth":			self = .E05
+//		case "fort totten": ignoring; set to B06 earlier
+		case "west hyattsville":				self = .E07
+		case "prince george's plaza":			self = .E08
+		case "college park-u of md":			self = .E09
+		case "greenbelt":						self = .E10
+//		case "gallery pl-chinatown": ignoring; set to B01 earlier
+		case "archives":						self = .F02
+//		case "l'enfant plaza": ignoring; set to D03 earlier
+		case "waterfront":						self = .F04
+		case "navy yard-ballpark":				self = .F05
+		case "anacostia":						self = .F06
+		case "congress heights":				self = .F07
+		case "southern avenue":					self = .F08
+		case "naylor road":						self = .F09
+		case "suitland":						self = .F10
+		case "branch ave":						self = .F11
+		case "benning road":					self = .G01
+		case "capitol heights":					self = .G02
+		case "addison road-seat pleasant":		self = .G03
+		case "morgan boulevard":				self = .G04
+		case "largo town center":				self = .G05
+		case "van dorn street":					self = .J02
+		case "franconia-springfield":			self = .J03
+		case "court house":						self = .K01
+		case "clarendon":						self = .K02
+		case "virginia square-gmu":				self = .K03
+		case "ballston-mu":						self = .K04
+		case "east falls church":				self = .K05
+		case "west falls church-ut/uva":		self = .K06
+		case "dunn loring-merrifield":			self = .K07
+		case "vienna/fairfax/gmu":				self = .K08
+		case "mclean":							self = .N01
+		case "tyson's corner":					self = .N02
+		case "greensboro":						self = .N03
+		case "spring hill":						self = .N04
+		case "wiehle-reston east":				self = .N06
+		default:
+			print("Station: invalid description")
+			return nil
+		}
+	}
+	
+	/**
 	The name of the Metro station
 	*/
 	public var description : String {
@@ -265,5 +373,4 @@ public enum Station: String, CustomStringConvertible {
 		case Space: return CLLocation()
 		}
 	}
-	
 }

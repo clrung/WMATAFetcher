@@ -42,7 +42,7 @@ var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]", trainArraySho
 Pass `WMATAfetcher` a station code to get predictions.  Implement `onCompleted` to handle the `TrainResponse` returned by `getPrediction()`.
 
 ```obj-c
-String stationCode = "A01"	// Metro Center
+String stationCode = Station(description: "Metro Center")!.rawValue
 WMATAfetcher.getPrediction(stationCode, onCompleted: {
 trainResponse in
 	if trainResponse.error == nil {
