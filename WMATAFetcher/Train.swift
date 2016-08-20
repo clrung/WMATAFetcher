@@ -25,10 +25,9 @@ import Foundation
 import SwiftyJSON
 
 /**
-Based on WMATA's definition of IMPredictionTrainInfo, found here: https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo
+Based on WMATA's definition of [IMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo).
 */
 public class Train {
-	
 	public var numCars: String = ""
 	public var destination: Station = Station.A01
 		// abbreviated destination is not used.
@@ -63,4 +62,19 @@ public class Train {
 		"min: \(min)"
 	}
 	
+}
+
+/**
+Stores the Train array and an error code (mutually exclusive).
+
+If successful, trains will be non nil and error will be nil.  If unsuccessful, trains will be nil and error will or nil if there was an error.
+*/
+public struct TrainResponse {
+	public var trains: [Train]?
+	public var error: String?
+	
+	public init(trains: [Train]?, error: String?) {
+		self.trains = trains
+		self.error = error
+	}
 }

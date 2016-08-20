@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name	      = 'WMATAFetcher'
-  s.version          = '1.0.1'
+  s.version          = '2.0.0'
   s.summary          = 'Wrapper Pod for the WMATA API'
 
   s.description      = <<-DESC
 WMATAFetcher contains helper methods to fetch predictions from the WMATA API.
-It uses SwiftyJSON to populate an array of Train objects, which contain the number of cars, destination, group, line, location, and minutes till arrival.
+It uses [SwiftyJSON](https://cocoapods.org/pods/SwiftyJSON) to populate an array of [Train](http://cocoadocs.org/docsets/WMATAFetcher/1.0.1/Classes/Train.html) objects, which contain the number of cars, destination, group, line, location, and minutes until train arrival.
                        DESC
 
   s.homepage	      = 'https://github.com/clrung/WMATAFetcher'
