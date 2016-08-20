@@ -1,7 +1,9 @@
 # Version 2.0.0 (codename: "usable") 
 This is what should have been v.1.0.0.
 
-The core code was refactored considerably to only expose what is needed to the user.  Usage and Documentation were also added.
+* `WMATAFetcher` was refactored considerably to only expose what is needed to the user.
+* Added Usage
+* Added [AppleDocs](http://nshipster.com/documentation/) to the classes
 
 # Version 1.0.1
 Steps toward making this a true API:

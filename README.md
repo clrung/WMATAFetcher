@@ -56,11 +56,13 @@ trainResponse in
 ### Error Handling
 `TrainResponse.error` is a `String?` that has three possible values:
 
-1. nil
+1. `nil`
  * Fetch was successful
 1. "Internet connection is offline"
 1. "Prediction fetch failed (Code: [HTTP STATUS CODE])"
  * If the status code returned by the request is not 200 (success), this error will be thrown.  It can be any [HTTP status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), but will most likely be a [401 (Unauthorized)](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error) error, caused by an invalid WMATA API key.
+
+Use these values to notify your user about the error.
 
 ## Dependencies
 * [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)
