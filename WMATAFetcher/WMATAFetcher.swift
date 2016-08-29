@@ -25,6 +25,9 @@ import Foundation
 import SwiftyJSON
 import CoreLocation
 
+/**
+Fetches predictions from the [WMATA API](https://developer.wmata.com/), parses them with [SwiftyJSON](), and stores them in an array of [Train](https://github.com/clrung/WMATAFetcher/blob/master/WMATAFetcher/Train.swift) objects, which contain all relevant information about a Metro train.
+*/
 public class WMATAFetcher {
 
 	/**
@@ -37,14 +40,14 @@ public class WMATAFetcher {
 	private var WMATA_API_KEY: String
 	
 	/**
-	If true, the train array will include spaces between each group.
-	*/
-	private var trainArrayShouldIncludeSpaces: Bool
-	
-	/**
-	The time the WMATAFetcher is instantiated
+	Two seconds before the time the WMATAFetcher is instantiated.  Used to prevent repeated calls to the WMATA API.
 	*/
 	private var timeBefore: NSDate = NSDate(timeIntervalSinceNow: NSTimeInterval(-2))
+	
+	/**
+	If true, the Train array will include spaces between each group.
+	*/
+	public var isSpaceInTrainArray: Bool
 	
 	/**
 	Default constructor.  Creates a WMATAFetcher, provided a WMATA API key is supplied, and includes spaces between groups.
@@ -54,19 +57,19 @@ public class WMATAFetcher {
 	*/
 	public required init(WMATA_API_KEY: String) {
 		self.WMATA_API_KEY = WMATA_API_KEY
-		self.trainArrayShouldIncludeSpaces = true
+		self.isSpaceInTrainArray = true
 	}
 	
 	/**
 	Creates a WMATAFetcher, provided a WMATA API key is supplied.
 	
 	- parameter WMATA_API_KEY: The developer's WMATA API key.  Get a free key after you [create an account](https://developer.wmata.com/signup/).
-	- parameter trainArrayShouldIncludeSpaces: if true, spaces will separate each group in the trains array.
+	- parameter isSpaceInTrainArray: if true, spaces will separate each group in the trains array.
 	- returns: The created WMATAFetcher
 	*/
-	public required init(WMATA_API_KEY: String, trainArrayShouldIncludeSpaces: Bool) {
+	public required init(WMATA_API_KEY: String, isSpaceInTrainArray: Bool) {
 		self.WMATA_API_KEY = WMATA_API_KEY
-		self.trainArrayShouldIncludeSpaces = trainArrayShouldIncludeSpaces
+		self.isSpaceInTrainArray = isSpaceInTrainArray
 	}
 	
 	/**
@@ -93,7 +96,7 @@ public class WMATAFetcher {
 						if trainResponse.error == nil {
 							if trainResponse.trains != nil {
 								let trainsLevelTwo = trainResponse.trains!
-								if self.trainArrayShouldIncludeSpaces {
+								if self.isSpaceInTrainArray {
 									trainsLevelOne.append(Train.initSpace())
 								}
 								onCompleted(result: TrainResponse(trains: trainsLevelOne + trainsLevelTwo, error: nil))
@@ -226,7 +229,7 @@ public class WMATAFetcher {
 		
 		// Insert a space between each group
 		for (index, train) in trains.enumerate() {
-			if trains.get(index + 1) != nil && train.group != trains[index + 1].group && self.trainArrayShouldIncludeSpaces {
+			if trains.get(index + 1) != nil && train.group != trains[index + 1].group && self.isSpaceInTrainArray {
 				trains.insert(Train.initSpace(), atIndex: index + 1)
 			}
 		}
@@ -235,7 +238,7 @@ public class WMATAFetcher {
 	}
 	
 	/**
-	Returns the closest metro stations to location.  If numStations is invalid, this method
+	Returns the closest metro stations to location.  If numStations is below 1, this method
 	will return 5 stations.
 	
 	- parameter location: The location

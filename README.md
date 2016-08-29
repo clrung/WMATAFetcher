@@ -1,6 +1,6 @@
-# WMATAFetcher [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/clrung/WMATAFetcher/master/LICENSE) [![platforms](https://img.shields.io/cocoapods/p/AFNetworking.svg)]()
+# WMATAFetcher ![language](https://img.shields.io/badge/Language-Swift-blue.svg) [![Version](https://img.shields.io/cocoapods/v/WMATAFetcher.svg?style=flat)](http://cocoapods.org/pods/WMATAFetcher) [![License](https://img.shields.io/cocoapods/l/WMATAFetcher.svg?style=flat)](http://cocoapods.org/pods/WMATAFetcher) [![Platform](https://img.shields.io/cocoapods/p/WMATAFetcher.svg?style=flat)](http://cocoapods.org/pods/WMATAFetcher)
 ## Description
-A cross-platform [CocoaPod](https://cocoapods.org) that fetches information from [WMATA's API](https://developer.wmata.com/) and stores it in Train objects, which are modeled after the API's [AIMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo) object.
+A cross-platform [CocoaPod](https://cocoapods.org) that fetches information from [WMATA's API](https://developer.wmata.com/) and stores it in `Train` objects, which are modeled after the API's [AIMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo) object.
 
 ## Requirements
 * iOS 8.0+
@@ -32,10 +32,18 @@ var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]")
 ```
 
 #### Spaces between groups
-By default, a `Station.Space` object is placed in the `Train` array to separate the groups.  If you do not want this space in the `Train` array, use 
+The `isSpaceInTrainArray` `BOOL` determines if a `Station.Space` object will separate each group in the `Train` array (default: `true`).
+
+You may initialize this value when creating a new `WMATAFetcher` object:
 
 ```obj-c
-var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]", trainArrayShouldIncludeSpaces: false)
+var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]", isSpaceInTrainArray: false)
+```
+
+You may also change the value of `isSpaceInTrainArray` directly:
+
+```obj-c
+WMATAfetcher.isSpaceInTrainArray = false
 ```
 
 ### Fetching
