@@ -94,15 +94,12 @@ public struct TrainResponse {
 	*/
 	public var trains: [Train]?
 	/**
-	The error.  `nil` when `getPrediction()` is successful.  When it is unsuccessful, `error` will be either:
+	The HTTP status code.  `nil` when `getPrediction()` is successful.  Common error codes:
 	
-	
-	1. "Internet connection is offline"
-	2. "Prediction fetch failed (Code: [HTTP STATUS CODE])"
-	
-		[HTTP STATUS CODE] will contain the status code returned by the HTTP request.
+	1. -1009: The internet connection is offline
+	2. 403: Invalid request (likely a bad WMATA key)
 	*/
-	public var error: String?
+	public var errorCode: Int?
 	
 	/**
 	TrainResponse constructor
@@ -110,8 +107,8 @@ public struct TrainResponse {
 	- parameter trains: the Train array
 	- parameter error: the error
 	*/
-	public init(trains: [Train]?, error: String?) {
+	public init(trains: [Train]?, errorCode: Int?) {
 		self.trains = trains
-		self.error = error
+		self.errorCode = errorCode
 	}
 }

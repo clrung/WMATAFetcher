@@ -1,3 +1,8 @@
+# Version 2.0.1
+* trainArrayShouldIncludeSpaces -> isSpaceInTrainArray to be consistent with boolean naming convention
+* Changed errorCode's type from String? to Int? to facilitate easier custom error handling
+* Added more documentation
+
 # Version 2.0.0 (codename: "usable") 
 This is what should have been v.1.0.0.
 

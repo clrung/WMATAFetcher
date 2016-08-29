@@ -88,20 +88,20 @@ public class WMATAFetcher {
 			
 			getPrediction(stationCode, onCompleted: {
 				trainResponse in
-				if trainResponse.error == nil {
+				if trainResponse.errorCode == nil {
 					var trainsLevelOne = trainResponse.trains!
 					
 					self.handleTwoLevelStation(stationCode, onCompleted: {
 						trainResponse in
-						if trainResponse.error == nil {
+						if trainResponse.errorCode == nil {
 							if trainResponse.trains != nil {
 								let trainsLevelTwo = trainResponse.trains!
 								if self.isSpaceInTrainArray {
 									trainsLevelOne.append(Train.initSpace())
 								}
-								onCompleted(result: TrainResponse(trains: trainsLevelOne + trainsLevelTwo, error: nil))
+								onCompleted(result: TrainResponse(trains: trainsLevelOne + trainsLevelTwo, errorCode: nil))
 							} else {
-								onCompleted(result: TrainResponse(trains: trainsLevelOne, error: nil))
+								onCompleted(result: TrainResponse(trains: trainsLevelOne, errorCode: nil))
 							}
 						} else {
 							onCompleted(result: trainResponse)
@@ -149,7 +149,7 @@ public class WMATAFetcher {
 				onCompleted(result: trainResponse)
 			})
 		} else {
-			onCompleted(result: TrainResponse(trains: nil, error: nil))
+			onCompleted(result: TrainResponse(trains: nil, errorCode: nil))
 		}
 	}
 	
@@ -176,14 +176,13 @@ public class WMATAFetcher {
 				let statusCode = (response as! NSHTTPURLResponse).statusCode
 				if statusCode == 200 { // success
 					let trains = self.populateTrainArray(JSON(data: data!))
-					onCompleted(result: TrainResponse(trains: trains, error: nil))
+					onCompleted(result: TrainResponse(trains: trains, errorCode: nil))
 				} else {
-					onCompleted(result: TrainResponse(trains: nil, error: "Prediction fetch failed (Code: \(statusCode))"))
+					onCompleted(result: TrainResponse(trains: nil, errorCode: statusCode))
 				}
 			} else {
-				if error?.code == -1009 {
-					onCompleted(result: TrainResponse(trains: nil, error: "Internet connection is offline"))
-				}
+				onCompleted(result: TrainResponse(trains: nil, errorCode: error?.code))
+
 			}
 		}).resume()
 	}
