@@ -1,3 +1,7 @@
+# Version 2.1.0
+* Updated to Swift 3
+* Updated SwiftyJSON
+
 # Version 2.0.1
 * trainArrayShouldIncludeSpaces -> isSpaceInTrainArray to be consistent with boolean naming convention
 * Changed errorCode's type from String? to Int? to facilitate easier custom error handling

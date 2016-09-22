@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name	      = 'WMATAFetcher'
-  s.version          = '2.0.1'
+  s.version          = '2.1.0'
   s.summary          = 'Wrapper Pod for the WMATA API'
 
   s.description      = <<-DESC
@@ -21,5 +21,5 @@ It uses [SwiftyJSON](https://cocoapods.org/pods/SwiftyJSON) to populate an array
 
   s.source_files = 'WMATAFetcher/**/*.swift'
 
-  s.dependency 'SwiftyJSON', '~> 2.3'
+  s.dependency 'SwiftyJSON', '~> 3.0'
 end
