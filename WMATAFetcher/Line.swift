@@ -61,13 +61,13 @@ public enum Line: String {
 	*/
     public var color : Color {
         switch self {
-        case .RD: return Color.redColor()
+        case .RD: return Color.red
         case .BL: return Color(red: 80/255, green: 150/255, blue: 240/255, alpha: 1)
-        case .YL: return Color.yellowColor()
-        case .OR: return Color.orangeColor()
+        case .YL: return Color.yellow
+        case .OR: return Color.orange
         case .GR: return Color(red: 50/255, green: 220/255, blue: 50/255, alpha: 1)
         case .SV: return Color(red: 222/255, green: 222/255, blue: 222/255, alpha: 1)
-        case .NO: return Color.clearColor()
+        case .NO: return Color.clear
         }
     }
     

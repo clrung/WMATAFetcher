@@ -27,31 +27,31 @@ import SwiftyJSON
 /**
 Based on WMATA's definition of [IMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo).
 */
-public class Train {
+open class Train {
 	/**
 	The number of cars in the train
 	*/
-	public var numCars: String = ""
+	open var numCars: String = ""
 	/**
 	The destination.  Abbreviated destination is not used, and the destinationCode and destinationName can be determined by calling destination.rawValue and destination.description, respectively.
 	*/
-	public var destination: Station = Station.A01
+	open var destination: Station = Station.A01
 	/**
 	The group
 	*/
-	public var group: String = ""
+	open var group: String = ""
 	/**
 	The line color
 	*/
-	public var line: Line = Line.NO
+	open var line: Line = Line.NO
 	/**
 	The current location of the train.  The locationCode and locationName can be determined by calling location.rawValue and location.description, respectively.
 	*/
-	public var location: Station = Station.A01
+	open var location: Station = Station.A01
 	/**
 	The number of minutes until the train arrives at the station.
 	*/
-	public var min: String = "0"
+	open var min: String = "0"
 	/**
 	Train constructor
 	*/

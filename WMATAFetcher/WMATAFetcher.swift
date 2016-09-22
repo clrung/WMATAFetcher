@@ -28,26 +28,26 @@ import CoreLocation
 /**
 Fetches predictions from the [WMATA API](https://developer.wmata.com/), parses them with [SwiftyJSON](), and stores them in an array of [Train](https://github.com/clrung/WMATAFetcher/blob/master/WMATAFetcher/Train.swift) objects, which contain all relevant information about a Metro train.
 */
-public class WMATAFetcher {
+open class WMATAFetcher {
 
 	/**
 	The start of the URL used to make the call to the WMATA API.  The station code to fetch will proceed this.
 	*/
-	private var WMATA_PREDICTION_BASE_URL = "https://api.wmata.com/StationPrediction.svc/json/GetPrediction/"
+	fileprivate var WMATA_PREDICTION_BASE_URL = "https://api.wmata.com/StationPrediction.svc/json/GetPrediction/"
 	/**
 	The developer's WMATA API key
 	*/
-	private var WMATA_API_KEY: String
+	fileprivate var WMATA_API_KEY: String
 	
 	/**
 	Two seconds before the time the WMATAFetcher is instantiated.  Used to prevent repeated calls to the WMATA API.
 	*/
-	private var timeBefore: NSDate = NSDate(timeIntervalSinceNow: NSTimeInterval(-2))
+	fileprivate var timeBefore: Date = Date(timeIntervalSinceNow: TimeInterval(-2))
 	
 	/**
 	If true, the Train array will include spaces between each group.
 	*/
-	public var isSpaceInTrainArray: Bool
+	open var isSpaceInTrainArray: Bool
 	
 	/**
 	Default constructor.  Creates a WMATAFetcher, provided a WMATA API key is supplied, and includes spaces between groups.
@@ -79,12 +79,12 @@ public class WMATAFetcher {
 	- parameter onCompleted: the completion handler
 	- returns: A TrainResponse, which contains an array of Trains and an error message.
 	*/
-	public func getStationPredictions(stationCode: String, onCompleted: (result: TrainResponse) -> ()) {
-		let timeAfter = NSDate()
+	open func getStationPredictions(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
+		let timeAfter = Date()
 		
 		// only fetch new predictions if it has been at least one second since they were last fetched
-		if timeAfter.timeIntervalSinceDate(timeBefore) > 1 {
-			timeBefore = NSDate()
+		if timeAfter.timeIntervalSince(timeBefore) > 1 {
+			timeBefore = Date()
 			
 			getPrediction(stationCode, onCompleted: {
 				trainResponse in
@@ -99,17 +99,17 @@ public class WMATAFetcher {
 								if self.isSpaceInTrainArray {
 									trainsLevelOne.append(Train.initSpace())
 								}
-								onCompleted(result: TrainResponse(trains: trainsLevelOne + trainsLevelTwo, errorCode: nil))
+								onCompleted(TrainResponse(trains: trainsLevelOne + trainsLevelTwo, errorCode: nil))
 							} else {
-								onCompleted(result: TrainResponse(trains: trainsLevelOne, errorCode: nil))
+								onCompleted(TrainResponse(trains: trainsLevelOne, errorCode: nil))
 							}
 						} else {
-							onCompleted(result: trainResponse)
+							onCompleted(trainResponse)
 						}
 					})
 					
 				} else {
-					onCompleted(result: trainResponse)
+					onCompleted(trainResponse)
 				}
 			})
 		}
@@ -124,7 +124,7 @@ public class WMATAFetcher {
 	- parameter onCompleted: the completion handler
 	- returns: A TrainResponse, which contains an array of Trains and an error message.
 	*/
-	private func handleTwoLevelStation(stationCode: String, onCompleted: (result: TrainResponse) -> ()) {
+	fileprivate func handleTwoLevelStation(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
 		/**
 		Mutable copy of stationCode
 		*/
@@ -146,10 +146,10 @@ public class WMATAFetcher {
 			
 			getPrediction(stationCode, onCompleted: {
 				trainResponse in
-				onCompleted(result: trainResponse)
+				onCompleted(trainResponse)
 			})
 		} else {
-			onCompleted(result: TrainResponse(trains: nil, errorCode: nil))
+			onCompleted(TrainResponse(trains: nil, errorCode: nil))
 		}
 	}
 	
@@ -160,31 +160,30 @@ public class WMATAFetcher {
 	- parameter onCompleted: the completion handler
 	- returns: A TrainResponse, which contains an array of Trains and an error message.
 	*/
-	private func getPrediction(stationCode: String, onCompleted: (result: TrainResponse) -> ()) {
+	fileprivate func getPrediction(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
 		print("WMATAFetcher: fetching predictions for \((Station(rawValue: stationCode)?.rawValue)!) (\((Station(rawValue: stationCode)?.description)!))")
 		
-		guard let wmataURL = NSURL(string: WMATA_PREDICTION_BASE_URL + stationCode) else {
+		guard let wmataURL = URL(string: WMATA_PREDICTION_BASE_URL + stationCode) else {
 			return
 		}
 		
-		let request = NSMutableURLRequest(URL: wmataURL)
+		var request = URLRequest(url: wmataURL)
 		
-		request.setValue(WMATA_API_KEY, forHTTPHeaderField:"api_key")
+		request.addValue(WMATA_API_KEY, forHTTPHeaderField: "api_key")
 		
-		NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data: NSData?, response: NSURLResponse?, error: NSError?) in
+		URLSession.shared.dataTask(with: request) { data, response, error in
 			if error == nil {
-				let statusCode = (response as! NSHTTPURLResponse).statusCode
+				let statusCode = (response as! HTTPURLResponse).statusCode
 				if statusCode == 200 { // success
 					let trains = self.populateTrainArray(JSON(data: data!))
-					onCompleted(result: TrainResponse(trains: trains, errorCode: nil))
+					onCompleted(TrainResponse(trains: trains, errorCode: nil))
 				} else {
-					onCompleted(result: TrainResponse(trains: nil, errorCode: statusCode))
+					onCompleted(TrainResponse(trains: nil, errorCode: statusCode))
 				}
 			} else {
-				onCompleted(result: TrainResponse(trains: nil, errorCode: error?.code))
-
+				onCompleted(TrainResponse(trains: nil, errorCode: (error as! NSError).code))
 			}
-		}).resume()
+		}.resume()
 	}
 	
 	/**
@@ -193,7 +192,7 @@ public class WMATAFetcher {
 	- parameter json: the JSON to be parsed
 	- return an array of Trains
 	*/
-	private func populateTrainArray(json: JSON) -> [Train] {
+	fileprivate func populateTrainArray(_ json: JSON) -> [Train] {
 		// the JSON will always contain one root element, "Trains."
 		// Stripping this out to get to the elements.
 		let json = json["Trains"]
@@ -224,12 +223,12 @@ public class WMATAFetcher {
 				min: min ?? subJson["Min"].stringValue))
 		}
 		
-		trains.sortInPlace({ $0.group < $1.group })
+		trains.sort(by: { $0.group < $1.group })
 		
 		// Insert a space between each group
-		for (index, train) in trains.enumerate() {
+		for (index, train) in trains.enumerated() {
 			if trains.get(index + 1) != nil && train.group != trains[index + 1].group && self.isSpaceInTrainArray {
-				trains.insert(Train.initSpace(), atIndex: index + 1)
+				trains.insert(Train.initSpace(), at: index + 1)
 			}
 		}
 		
@@ -244,7 +243,7 @@ public class WMATAFetcher {
 	- parameter numStations: The number of stations to include in the Station array
 	- returns: A Station array containing numStations closest stations to location
 	*/
-	public func getClosestStations(location: CLLocation, numStations: Int) -> [Station] {
+	open func getClosestStations(_ location: CLLocation, numStations: Int) -> [Station] {
 		/**
 		Mutable copy of the numStations
 		*/
@@ -257,12 +256,12 @@ public class WMATAFetcher {
 		var distancesDictionary: [CLLocationDistance:String] = [:]
 		
 		for station in Station.allValues {
-			distancesDictionary[station.location.distanceFromLocation(location)] = station.rawValue
+			distancesDictionary[station.location.distance(from: location)] = station.rawValue
 		}
 		
-		let sortedDistancesKeys = Array(distancesDictionary.keys).sort(<)
+		let sortedDistancesKeys = Array(distancesDictionary.keys).sorted(by: <)
 		
-		for (index, key) in sortedDistancesKeys.enumerate() {
+		for (index, key) in sortedDistancesKeys.enumerated() {
 			closestStations.append(Station(rawValue: distancesDictionary[key]!)!)
 			if index == numStations - 1 {
 				break;
@@ -278,7 +277,7 @@ public class WMATAFetcher {
 	- parameter trains: the Train array
 	- returns: the number of spaces in the Train array
 	*/
-	public func getSpaceCount(trains: [Train]) -> Int {
+	open func getSpaceCount(_ trains: [Train]) -> Int {
 		var spaceCount = 0;
 		for train in trains {
 			if train.location == Station.Space {
@@ -299,7 +298,7 @@ extension Array {
 	- parameter index: the index of the element to return
 	- returns: the element if it exists, otherwise nil
 	*/
-	func get(index: Int) -> Element? {
+	func get(_ index: Int) -> Element? {
 		if 0 <= index && index < count {
 			return self[index]
 		} else {
