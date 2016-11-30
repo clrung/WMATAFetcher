@@ -206,7 +206,7 @@ open class WMATAFetcher {
 			
 			if subJson["DestinationName"].stringValue == Station.No.description || subJson["DestinationName"].stringValue == Station.Train.description {
 				line = Line.NO
-				min = subJson["Min"] == nil ? "-" : subJson["Min"].stringValue
+				min = subJson["Min"] == JSON.null ? "-" : subJson["Min"].stringValue
 				numCars = "-"
 				destination = subJson["DestinationName"].stringValue == Station.No.description ? Station.No : Station.Train
 			}

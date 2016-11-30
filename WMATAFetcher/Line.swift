@@ -66,7 +66,7 @@ public enum Line: String {
         case .YL: return Color.yellow
         case .OR: return Color.orange
         case .GR: return Color(red: 50/255, green: 220/255, blue: 50/255, alpha: 1)
-        case .SV: return Color(red: 222/255, green: 222/255, blue: 222/255, alpha: 1)
+        case .SV: return Color(red: 97/255, green: 97/255, blue: 97/255, alpha: 1)
         case .NO: return Color.clear
         }
     }
