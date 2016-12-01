@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55D85A44197775D95EA5E462 /* Pods_WMATAFetcheriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4624B6E8FFF5CC6680468F39 /* Pods_WMATAFetcheriOS.framework */; };
+		111C2A928540560B6C17BD67 /* Pods_WMATAFetcheriOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4624B6E8FFF5CC6680468F39 /* Pods_WMATAFetcheriOS.framework */; };
 		58139D741D625DF4000CEAEE /* WMATAFetcherMac.h in Headers */ = {isa = PBXBuildFile; fileRef = 58139D731D625DF4000CEAEE /* WMATAFetcherMac.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		58139D811D625E0B000CEAEE /* WMATAFetcherTV.h in Headers */ = {isa = PBXBuildFile; fileRef = 58139D801D625E0B000CEAEE /* WMATAFetcherTV.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		58139D8E1D625E31000CEAEE /* WMATAFetcheriOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 58139D8D1D625E31000CEAEE /* WMATAFetcheriOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,7 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5817C3EB1DA44BC200E20A16 /* Pods_WMATAFetcheriOS.framework in Frameworks */,
-				55D85A44197775D95EA5E462 /* Pods_WMATAFetcheriOS.framework in Frameworks */,
+				111C2A928540560B6C17BD67 /* Pods_WMATAFetcheriOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

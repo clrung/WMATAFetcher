@@ -245,7 +245,7 @@ open class WMATAFetcher {
 	*/
 	open func getClosestStations(_ location: CLLocation, numStations: Int) -> [Station] {
 		/**
-		Mutable copy of the numStations
+		Mutable copy of numStations
 		*/
 		var numStations = numStations
 		if numStations < 1 {
@@ -269,6 +269,25 @@ open class WMATAFetcher {
 		}
 		
 		return closestStations
+	}
+	
+	open func getDistanceFromStation(location: CLLocation, station: Station, isMetric: Bool) -> String {
+		var distanceToStation = station.location.distance(from: location)
+		var units: String
+		var decimal: String
+		
+		distanceToStation = isMetric ? distanceToStation : distanceToStation / 3.280839895
+		
+		if (distanceToStation < 1000 && isMetric) || (distanceToStation < 528 && !isMetric) {
+			decimal = "0"
+			units = isMetric ? "m" : "ft"
+		} else {
+			decimal = "1"
+			units = isMetric ? "km" : "mi"
+			distanceToStation = isMetric ? distanceToStation / 1000 : distanceToStation / 5280
+		}
+		
+		return String(format:"%." + decimal + "f " + units, distanceToStation)
 	}
 	
 	/**
