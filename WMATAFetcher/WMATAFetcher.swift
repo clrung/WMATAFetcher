@@ -25,73 +25,58 @@ import Foundation
 import SwiftyJSON
 import CoreLocation
 
-/**
-Fetches predictions from the [WMATA API](https://developer.wmata.com/), parses them with [SwiftyJSON](), and stores them in an array of [Train](https://github.com/clrung/WMATAFetcher/blob/master/WMATAFetcher/Train.swift) objects, which contain all relevant information about a Metro train.
-*/
+/// Fetches predictions from the [WMATA API](https://developer.wmata.com/), parses them with [SwiftyJSON](), and stores them in an array of [Train](https://github.com/clrung/WMATAFetcher/blob/master/WMATAFetcher/Train.swift) objects, which contain all relevant information about a Metro train.
 open class WMATAFetcher {
-
-	/**
-	The start of the URL used to make the call to the WMATA API.  The station code to fetch will proceed this.
-	*/
+	
+	/// The start of the URL used to make the call to the WMATA API.  The station code to fetch will proceed this.
 	fileprivate var WMATA_PREDICTION_BASE_URL = "https://api.wmata.com/StationPrediction.svc/json/GetPrediction/"
-	/**
-	The developer's WMATA API key
-	*/
+	
+	/// The developer's WMATA API key.  Get a free key after you [create an account](https://developer.wmata.com/signup/).
 	fileprivate var WMATA_API_KEY: String
 	
-	/**
-	Two seconds before the time the WMATAFetcher is instantiated.  Used to prevent repeated calls to the WMATA API.
-	*/
+	/// Two seconds before the time the WMATAFetcher is instantiated.  Used to prevent repeated calls to the WMATA API.
 	fileprivate var timeBefore: Date = Date(timeIntervalSinceNow: TimeInterval(-2))
 	
-	/**
-	If true, the Train array will include spaces between each group.
-	*/
+	/// If true, the Train array will include spaces between each group.
 	open var isSpaceInTrainArray: Bool
-	
-	/**
-	Default constructor.  Creates a WMATAFetcher, provided a WMATA API key is supplied, and includes spaces between groups.
-	
-	- parameter WMATA_API_KEY: The developer's WMATA API key.  Get a free key after you [create an account](https://developer.wmata.com/signup/).
-	- returns: The created WMATAFetcher
-	*/
+
+	/// The default constructor.  Creates a WMATAFetcher, provided a WMATA API key is supplied, and includes spaces between groups.
+	///
+	/// - Parameter WMATA_API_KEY: the developer's WMATA API key
 	public required init(WMATA_API_KEY: String) {
 		self.WMATA_API_KEY = WMATA_API_KEY
 		self.isSpaceInTrainArray = true
 	}
 	
-	/**
-	Creates a WMATAFetcher, provided a WMATA API key is supplied.
-	
-	- parameter WMATA_API_KEY: The developer's WMATA API key.  Get a free key after you [create an account](https://developer.wmata.com/signup/).
-	- parameter isSpaceInTrainArray: if true, spaces will separate each group in the trains array.
-	- returns: The created WMATAFetcher
-	*/
+	/// Creates a WMATAFetcher, provided a WMATA API key is supplied.
+	///
+	/// - Parameters:
+	///   - WMATA_API_KEY: the developer's WMATA API key
+	///   - isSpaceInTrainArray: if true, spaces will separate each group in the trains array.
 	public required init(WMATA_API_KEY: String, isSpaceInTrainArray: Bool) {
 		self.WMATA_API_KEY = WMATA_API_KEY
 		self.isSpaceInTrainArray = isSpaceInTrainArray
 	}
 	
-	/**
-	Determines the Metro predictions for the station code, including the second level predictions for stations that have two levels (Gallery Place, Fort Totten, L'Enfant Plaza, and Metro Center)
-	
-	- parameter stationCode: the two digit station code
-	- parameter onCompleted: the completion handler
-	- returns: A TrainResponse, which contains an array of Trains and an error message.
-	*/
-	open func getStationPredictions(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
+	/// Determines the Metro predictions for the station code, including the second level predictions for stations that have two levels (Gallery Place, Fort Totten, L'Enfant Plaza, and Metro Center)
+	///
+	/// - Parameters:
+	///   - stationCode: the three digit station code
+	///   - onCompleted: the completion handler
+	///   - result: the TrainResponse
+	open func getStationPredictions(stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
 		let timeAfter = Date()
 		
 		// only fetch new predictions if it has been at least one second since they were last fetched
 		if timeAfter.timeIntervalSince(timeBefore) > 1 {
 			timeBefore = Date()
 			
-			getPrediction(stationCode, onCompleted: {
+			getPrediction(stationCode: stationCode, onCompleted: {
 				trainResponse in
 				if trainResponse.errorCode == nil {
 					var trainsLevelOne = trainResponse.trains!
 					
-					self.handleTwoLevelStation(stationCode, onCompleted: {
+					self.handleTwoLevelStation(stationCode: stationCode, onCompleted: {
 						trainResponse in
 						if trainResponse.errorCode == nil {
 							if trainResponse.trains != nil {
@@ -115,24 +100,19 @@ open class WMATAFetcher {
 		}
 	}
 	
-	/**
-	Checks the station code to see if it is one of the four metro stations that have two levels.  If it is, fetch the predictions for the station code and return it in a Train array.
-	
-	WMATA API: "Some stations have two platforms (e.g.: Gallery Place, Fort Totten, L'Enfant Plaza, and Metro Center). To retrieve complete predictions for these stations, be sure to pass in both StationCodes."
-	
-	- parameter stationCode: the station code to fetch
-	- parameter onCompleted: the completion handler
-	- returns: A TrainResponse, which contains an array of Trains and an error message.
-	*/
-	fileprivate func handleTwoLevelStation(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
-		/**
-		Mutable copy of stationCode
-		*/
+	/// Checks the station code to see if it is one of the four metro stations that have two levels.  If it is, fetch the predictions for the station code and return it in a Train array.
+	///
+	/// WMATA API documentation: "Some stations have two platforms (e.g.: Gallery Place, Fort Totten, L'Enfant Plaza, and Metro Center). To retrieve complete predictions for these stations, be sure to pass in both StationCodes."
+	///
+	/// - Parameters:
+	///   - stationCode: the three digit station code
+	///   - onCompleted: the completion handler
+	///   - result: the TrainResponse
+	fileprivate func handleTwoLevelStation(stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
+		/// Mutable copy of stationCode
 		var stationCode = stationCode
-		/**
-		The four WMATA stations that have two levels:
-									Metro Center;		Gallery Place;	Fort Totten;    and L'Enfant Plaza.
-		*/
+		/// The four WMATA stations that have two levels:
+		///							Metro Center;		Gallery Place;	Fort Totten;    and L'Enfant Plaza.
 		let twoLevelStations = [	Station.A01,		Station.B01,	Station.B06,		Station.D03]
 		
 		if twoLevelStations.contains(Station(rawValue: stationCode)!) {
@@ -144,7 +124,7 @@ open class WMATAFetcher {
 			default: break
 			}
 			
-			getPrediction(stationCode, onCompleted: {
+			getPrediction(stationCode: stationCode, onCompleted: {
 				trainResponse in
 				onCompleted(trainResponse)
 			})
@@ -153,14 +133,13 @@ open class WMATAFetcher {
 		}
 	}
 	
-	/**
-	Queries WMATA's API to fetch the stationCode's next train arrivals
-	
-	- parameter stationCode: the three digit station code
-	- parameter onCompleted: the completion handler
-	- returns: A TrainResponse, which contains an array of Trains and an error message.
-	*/
-	fileprivate func getPrediction(_ stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
+	/// Queries WMATA's API to fetch the stationCode's next train arrivals
+	///
+	/// - Parameters:
+	///   - stationCode: the three digit station code
+	///   - onCompleted: the completion handler
+	///   - result: the TrainResponse
+	fileprivate func getPrediction(stationCode: String, onCompleted: @escaping (_ result: TrainResponse) -> ()) {
 		print("WMATAFetcher: fetching predictions for \((Station(rawValue: stationCode)?.rawValue)!) (\((Station(rawValue: stationCode)?.description)!))")
 		
 		guard let wmataURL = URL(string: WMATA_PREDICTION_BASE_URL + stationCode) else {
@@ -175,7 +154,7 @@ open class WMATAFetcher {
 			if error == nil {
 				let statusCode = (response as! HTTPURLResponse).statusCode
 				if statusCode == 200 { // success
-					let trains = self.populateTrainArray(JSON(data: data!))
+					let trains = self.populateTrainArray(json: JSON(data: data!))
 					onCompleted(TrainResponse(trains: trains, errorCode: nil))
 				} else {
 					onCompleted(TrainResponse(trains: nil, errorCode: statusCode))
@@ -183,18 +162,16 @@ open class WMATAFetcher {
 			} else {
 				onCompleted(TrainResponse(trains: nil, errorCode: (error as! NSError).code))
 			}
-		}.resume()
+			}.resume()
 	}
 	
-	/**
-	Parses the json to create an array of Trains
-	
-	- parameter json: the JSON to be parsed
-	- return an array of Trains
-	*/
-	fileprivate func populateTrainArray(_ json: JSON) -> [Train] {
+	/// Parses the JSON object to create an array of Trains
+	///
+	/// - Parameter json: the JSON to be parsed
+	/// - Returns: an array of Trains
+	fileprivate func populateTrainArray(json: JSON) -> [Train] {
 		// the JSON will always contain one root element, "Trains."
-		// Stripping this out to get to the elements.
+		// Setting json to its children
 		let json = json["Trains"]
 		var trains = [Train]()
 		
@@ -216,18 +193,18 @@ open class WMATAFetcher {
 			}
 			
 			trains.append(Train(numCars: numCars ?? subJson["Car"].stringValue,
-				destination: destination ?? Station(rawValue: subJson["DestinationCode"].stringValue)!,
-				group: subJson["Group"].stringValue,
-				line: line ?? Line(rawValue: subJson["Line"].stringValue)!,
-				location: Station(rawValue: subJson["LocationCode"].stringValue)!,
-				min: min ?? subJson["Min"].stringValue))
+			                    destination: destination ?? Station(rawValue: subJson["DestinationCode"].stringValue)!,
+			                    group: subJson["Group"].stringValue,
+			                    line: line ?? Line(rawValue: subJson["Line"].stringValue)!,
+			                    location: Station(rawValue: subJson["LocationCode"].stringValue)!,
+			                    min: min ?? subJson["Min"].stringValue))
 		}
 		
 		trains.sort(by: { $0.group < $1.group })
 		
 		// Insert a space between each group
 		for (index, train) in trains.enumerated() {
-			if trains.get(index + 1) != nil && train.group != trains[index + 1].group && self.isSpaceInTrainArray {
+			if trains.get(index: index + 1) != nil && train.group != trains[index + 1].group && self.isSpaceInTrainArray {
 				trains.insert(Train.initSpace(), at: index + 1)
 			}
 		}
@@ -235,18 +212,15 @@ open class WMATAFetcher {
 		return trains
 	}
 	
-	/**
-	Returns the closest metro stations to location.  If numStations is below 1, this method
-	will return 5 stations.
-	
-	- parameter location: The location
-	- parameter numStations: The number of stations to include in the Station array
-	- returns: A Station array containing numStations closest stations to location
-	*/
-	open func getClosestStations(_ location: CLLocation, numStations: Int) -> [Station] {
-		/**
-		Mutable copy of numStations
-		*/
+	/// Returns the closest metro stations to location.  If numStations is below 1, this method
+	/// will return 5 stations.
+	///
+	/// - Parameters:
+	///   - location: the location
+	///   - numStations: the number of stations to include in the Station array
+	/// - Returns: a Station array containing numStations closest stations to location
+	open func getClosestStations(location: CLLocation, numStations: Int) -> [Station] {
+		/// Mutable copy of numStations
 		var numStations = numStations
 		if numStations < 1 {
 			numStations = 5
@@ -271,11 +245,19 @@ open class WMATAFetcher {
 		return closestStations
 	}
 	
+	/// Determines the distance from the specified location to the specified station.
+	///
+	/// - Parameters:
+	///   - location: the location
+	///   - station: the Station
+	///   - isMetric: if true, metric units are used. if false, imperial units are used.
+	/// - Returns: a String describing the distance, with 1 decimal precision if km or mi.
 	open func getDistanceFromStation(location: CLLocation, station: Station, isMetric: Bool) -> String {
 		var distanceToStation = station.location.distance(from: location)
 		var units: String
 		var decimal: String
 		
+		// 1 meter == 3.280839895 feet
 		distanceToStation = isMetric ? distanceToStation : distanceToStation / 3.280839895
 		
 		if (distanceToStation < 1000 && isMetric) || (distanceToStation < 528 && !isMetric) {
@@ -290,13 +272,11 @@ open class WMATAFetcher {
 		return String(format:"%." + decimal + "f " + units, distanceToStation)
 	}
 	
-	/**
-	Determines the number of spaces in the Train array
-	
-	- parameter trains: the Train array
-	- returns: the number of spaces in the Train array
-	*/
-	open func getSpaceCount(_ trains: [Train]) -> Int {
+	/// Determines the number of spaces in the Train array
+	///
+	/// - Parameter trains: the Train array
+	/// - Returns: the number of spaces in the Train array
+	open func getSpaceCount(trains: [Train]) -> Int {
 		var spaceCount = 0;
 		for train in trains {
 			if train.location == Station.Space {
@@ -309,15 +289,13 @@ open class WMATAFetcher {
 }
 
 extension Array {
-	/**
-	Safely lookup an index that might be out of bounds
-	
-	Adapted from http://stackoverflow.com/questions/25329186/safe-bounds-checked-array-lookup-in-swift-through-optional-bindings
-	
-	- parameter index: the index of the element to return
-	- returns: the element if it exists, otherwise nil
-	*/
-	func get(_ index: Int) -> Element? {
+	/// Safely lookup an index that might be out of bounds
+	///
+	/// Adapted from http://stackoverflow.com/questions/25329186/safe-bounds-checked-array-lookup-in-swift-through-optional-bindings
+	///
+	/// - Parameter index: the index of the element to return
+	/// - Returns: the element if it exists, otherwise nil
+	func get(index: Int) -> Element? {
 		if 0 <= index && index < count {
 			return self[index]
 		} else {
