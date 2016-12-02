@@ -24,37 +24,29 @@
 import Foundation
 import SwiftyJSON
 
-/**
-Based on WMATA's definition of [IMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo).
-*/
+/// Based on WMATA's definition of [IMPredictionTrainInfo](https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f/console#AIMPredictionTrainInfo).
 open class Train {
-	/**
-	The number of cars in the train
-	*/
+	/// The number of cars in the train
 	open var numCars: String = ""
-	/**
-	The destination.  Abbreviated destination is not used, and the destinationCode and destinationName can be determined by calling destination.rawValue and destination.description, respectively.
-	*/
+	/// The destination.  Abbreviated destination is not used, and the destinationCode and destinationName can be determined by calling destination.rawValue and destination.description, respectively.
 	open var destination: Station = Station.A01
-	/**
-	The group
-	*/
+	/// The group
 	open var group: String = ""
-	/**
-	The line color
-	*/
+	/// The line color
 	open var line: Line = Line.NO
-	/**
-	The current location of the train.  The locationCode and locationName can be determined by calling location.rawValue and location.description, respectively.
-	*/
+	/// The current location of the train.  The locationCode and locationName can be determined by calling location.rawValue and location.description, respectively.
 	open var location: Station = Station.A01
-	/**
-	The number of minutes until the train arrives at the station.
-	*/
+	/// The number of minutes until the train arrives at the station.
 	open var min: String = "0"
-	/**
-	Train constructor
-	*/
+	/// Constructor
+	///
+	/// - Parameters:
+	///   - numCars: the number of cars
+	///   - destination: the destination Station
+	///   - group: the group
+	///   - line: the Line
+	///   - location: the location Station of the Train
+	///   - min: the estimated number of minutes until the Train arrives at the location
 	required public init(numCars: String, destination: Station, group: String, line: Line, location: Station, min: String) {
 		self.numCars = numCars
 		self.destination = destination
@@ -64,16 +56,12 @@ open class Train {
 		self.min = min
 	}
 	
-	/**
-	Used to easily add a Station.Space object to the train array.
-	*/
+	/// Used to easily add a Station.Space object to the train array.
 	static func initSpace() -> Train {
 		return Train(numCars: "", destination: Station.Space, group: "-1", line: Line.NO, location: Station.Space, min: "")
 	}
 	
-	/**
-	Returns the value of each of the fields in Train.
-	*/
+	/// Returns the value of each of the fields in Train.
 	var debugDescription: String {
 		return "numCars: \(numCars)   " +
 		"destination: \(destination.description)   " +
@@ -85,28 +73,21 @@ open class Train {
 	
 }
 
-/**
-Stores the Train array and an error code.
-*/
+/// Stores the Train array and an error code.
 public struct TrainResponse {
-	/**
-	The array of Trains.  `nil` when the call to `getPrediction()` is unsuccessful.
-	*/
+	/// The array of Trains.  `nil` when the call to `getPrediction()` is unsuccessful.
 	public var trains: [Train]?
-	/**
-	The HTTP status code.  `nil` when `getPrediction()` is successful.  Common error codes:
-	
-	1. -1009: The internet connection is offline
-	2. 403: Invalid request (likely a bad WMATA key)
-	*/
+	/// The HTTP status code.  `nil` when `getPrediction()` is successful.  Common error codes:
+	///
+	/// 1. -1009: The internet connection is offline
+	/// 2. 403: Invalid request (likely a bad WMATA key)
 	public var errorCode: Int?
 	
-	/**
-	TrainResponse constructor
-	
-	- parameter trains: the Train array
-	- parameter error: the error
-	*/
+	/// TrainResponse constructor
+	///
+	/// - Parameters:
+	///   - trains: the Train array
+	///   - errorCode: the errorCode
 	public init(trains: [Train]?, errorCode: Int?) {
 		self.trains = trains
 		self.errorCode = errorCode

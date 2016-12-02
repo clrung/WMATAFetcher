@@ -24,9 +24,7 @@
 import Foundation
 import CoreLocation
 
-/**
-Represents each of the stations in the WMATA system
-*/
+/// Represents each of the stations in the WMATA system
 public enum Station: String, CustomStringConvertible {
 	/// Metro Center
 	case A01
@@ -225,9 +223,7 @@ public enum Station: String, CustomStringConvertible {
 	/// Space
 	case Space
 	
-	/**
-	Facilitates enumeration of all Metro stations (Source: http://www.swift-studies.com/blog/2014/6/10/enumerating-enums-in-swift)
-	*/
+	/// Facilitates enumeration of all Metro stations (Source: http://www.swift-studies.com/blog/2014/6/10/enumerating-enums-in-swift)
 	public static let allValues = [A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13, A14, A15,
 	                        B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B35,
 	                        C01, C02, C03, C04, C05, C06, C07, C08, C09, C10, C12, C13, C14, C15,
@@ -239,11 +235,10 @@ public enum Station: String, CustomStringConvertible {
 	                        K01, K02, K03, K04, K05, K06, K07, K08,
 	                        N01, N02, N03, N04, N06]
 	
-	/**
-	Returns the Station that corresponds to the given description, or nil if the description was invalid
-	
-	- parameter description: The name of the Metro station (case-insensitive)
-	*/
+	/// Returns the Station that corresponds to the given description, or nil if the description was invalid
+	///
+	/// - Parameters:
+	///   - description: The name of the Metro station (case-insensitive)
 	public init?(description: String) {
 		switch description.lowercased() {
 		case "metro center":					self = .A01
@@ -347,9 +342,7 @@ public enum Station: String, CustomStringConvertible {
 		}
 	}
 	
-	/**
-	The name of the Metro station
-	*/
+	/// The name of the Metro station
 	public var description : String {
 		switch self {
 		case .A01: return "Metro Center"
@@ -453,9 +446,7 @@ public enum Station: String, CustomStringConvertible {
 		}
 	}
 	
-	/**
-	The location of each Metro station
-	*/
+	/// The location of each Metro station
 	public var location: CLLocation {
 		switch self {
 		case .A01: return CLLocation(latitude: 38.898303, longitude: -77.028099)
