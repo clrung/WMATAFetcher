@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name	      = 'WMATAFetcher'
-  s.version          = '2.1.0'
+  s.version          = '2.2.0'
   s.summary          = 'Wrapper Pod for the WMATA API'
 
   s.description      = <<-DESC
