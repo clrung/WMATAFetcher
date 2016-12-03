@@ -1,3 +1,7 @@
+# Version 2.2.0
+* Added new method, `getDistanceFromStation()`, that returns the distance from a specified `CLLocation` and a `Station` as a human-readable `String`.
+* Updated documentation formatting
+
 # Version 2.1.0
 * Updated to Swift 3
 * Updated SwiftyJSON
