@@ -27,50 +27,58 @@ $ pod install
 ### Instantiation
 First, create a new `WMATAFetcher` object, passing it your [WMATA API key](https://developer.wmata.com/signup/):
 
-```obj-c
-var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]")
+```Swift
+var wmataFetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]")
 ```
 
 #### Spaces between groups
 The `isSpaceInTrainArray` `BOOL` determines if a `Station.Space` object will separate each group in the `Train` array (default: `true`).
 
-You may initialize this value when creating a new `WMATAFetcher` object:
+You may initialize this value when instantiating a new `WMATAFetcher` object:
 
-```obj-c
-var WMATAfetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]", isSpaceInTrainArray: false)
+```Swift
+var wmataFetcher = WMATAFetcher(WMATA_API_KEY: "[YOUR_WMATA_KEY]", isSpaceInTrainArray: false)
 ```
 
 You may also change the value of `isSpaceInTrainArray` directly:
 
-```obj-c
-WMATAfetcher.isSpaceInTrainArray = false
+```Swift
+wmataFetcher.isSpaceInTrainArray = false
 ```
 
 ### Fetching
-Pass `WMATAfetcher` a station code to get predictions.  Implement `onCompleted` to handle the `TrainResponse` returned by `getPrediction()`.
+Pass `wmataFetcher.getStationPredictions` a station code to get predictions.  Implement `onCompleted` to handle the `TrainResponse` returned.
 
-```obj-c
-String stationCode = Station(description: "Metro Center")!.rawValue
-WMATAfetcher.getPrediction(stationCode, onCompleted: {
-trainResponse in
-	if trainResponse.error == nil {
-		self.trains = trainResponse.trains!
+If `trainResponse.errorCode` is `nil`, we can safely force upwrap `trainResponse.trains?`.
+
+```Swift
+let wmataFetcher = WMATAFetcher(WMATA_API_KEY: "[API KEY HERE]")
+
+let metroCenterStationCode = Station(description: "Metro Center")!.rawValue
+
+wmataFetcher.getStationPredictions(stationCode: metroCenterStationCode, onCompleted: {
+	trainResponse in
+	if trainResponse.errorCode == nil {
+		for train in trainResponse.trains! {
+			print(train.debugDescription);
+		}
 	} else {
-		// handle fetch error
+		switch trainResponse.errorCode! {
+		case -1009:
+			print("Internet connection is offline")
+		default:
+			print("Prediction fetch failed (Code: \(trainResponse.errorCode!))")
 	}
 })
 ```
 
 ### Error Handling
-`TrainResponse.error` is a `String?` that has three possible values:
+`TrainResponse.errorCode` is an `Int?` representing the [HTTP status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) returned by WMATA's API.  If it is `nil`, the fetch was successful.  The most common error codes are:
 
-1. `nil`
- * Fetch was successful
-1. "Internet connection is offline"
-1. "Prediction fetch failed (Code: [HTTP STATUS CODE])"
- * If the status code returned by the request is not 200 (success), this error will be thrown.  It can be any [HTTP status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes), but will most likely be a [401 (Unauthorized)](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error) error, caused by an invalid WMATA API key.
-
-Use these values to notify your user about the error.
+1. -1009 
+ * The internet connection is offline
+1. 401
+ * Unauthorized.  This is likely a bad WMATA key.
 
 ## Dependencies
 * [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)
@@ -79,6 +87,12 @@ Use these values to notify your user about the error.
 * [DC Metro Widget](https://github.com/clrung/DCMetroWidget)
  * Today extension for macOS' Notification Center
  * Inspiration for this `Pod`
+
+<p align="center">
+<a href="http://appstore.com/mac/dcmetro"><img src="https://www.mapdiva.com/wp-content/uploads/2011/01/Mac_App_Store_Badge_US_UK1.png" width="400" height="200" alt="Available on the Mac App Store"/></a>
+
+<img src="https://raw.githubusercontent.com/clrung/DCMetroWidget/master/Screenshots/GitHub/Main.png" width="331"/>
+</p>
 
 ## License
 WMATAFetcher is available under the MIT license. See the LICENSE file for more info.
