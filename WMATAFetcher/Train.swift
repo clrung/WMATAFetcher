@@ -62,12 +62,12 @@ open class Train {
 	}
 	
 	/// Returns the value of each of the fields in Train.
-	var debugDescription: String {
-		return "numCars: \(numCars)   " +
-		"destination: \(destination.description)   " +
-		"group: \(group)   " +
-		"line: \(line.rawValue)   " +
-		"location: \(location.description)   " +
+	open var debugDescription: String {
+		return "numCars: \(numCars)\t" +
+		"destination: \(destination.description)\t" +
+		"group: \(group)\t" +
+		"line: \(line.rawValue)\t" +
+		"location: \(location.description)\t" +
 		"min: \(min)"
 	}
 	

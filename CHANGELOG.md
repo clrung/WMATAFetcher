@@ -1,3 +1,7 @@
+# Version 2.2.1
+* Updated README and made example usage more complete.
+* Exposed `Train.debugDescription` to ease debugging.
+
 # Version 2.2.0
 * Added new method, `getDistanceFromStation()`, that returns the distance from a specified `CLLocation` and a `Station` as a human-readable `String`.
 * Updated documentation formatting
