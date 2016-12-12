@@ -258,7 +258,7 @@ open class WMATAFetcher {
 		var decimal: String
 		
 		// 1 meter == 3.280839895 feet
-		distanceToStation = isMetric ? distanceToStation : distanceToStation / 3.280839895
+		distanceToStation = isMetric ? distanceToStation : distanceToStation * 3.280839895
 		
 		if (distanceToStation < 1000 && isMetric) || (distanceToStation < 528 && !isMetric) {
 			decimal = "0"
