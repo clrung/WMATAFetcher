@@ -1,3 +1,6 @@
+# Version 2.2.2
+* Bugfix: Imperial units returned by `getDistanceFromStation` were incorrect.
+
 # Version 2.2.1
 * Updated README and made example usage more complete.
 * Exposed `Train.debugDescription` to ease debugging.
