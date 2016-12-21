@@ -64,10 +64,10 @@ open class Train {
 	/// Returns the value of each of the fields in Train.
 	open var debugDescription: String {
 		return "numCars: \(numCars)\t" +
-		"destination: \(destination.description)\t" +
-		"group: \(group)\t" +
+		"destination: \(destination.description.padding(toLength: 30, withPad: " ", startingAt: 0))" +
+		"group: \(group.padding(toLength: 3, withPad: " ", startingAt: 0))" +
 		"line: \(line.rawValue)\t" +
-		"location: \(location.description)\t" +
+		"location: \(location.rawValue)\t" +
 		"min: \(min)"
 	}
 	
